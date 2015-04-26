@@ -1,0 +1,66 @@
+-----------------------------------------------------------------
+PBS: job name is lab4
+PBS: job identifier is 862.iccsl01.iccsl.gonzaga.edu
+PBS: qsub is running on iccsl01.iccsl.gonzaga.edu
+PBS: working directory is /home/Students/dcollins3/cpen435/lab4
+------------------------------------------------------
+Mon Mar 16 13:30:26 PDT 2015
+n: 512 npes: 4 
+n > 16, will not print matrices
+    Time elapsed: 2.393119 sec
+Mon Mar 16 13:30:29 PDT 2015
+-----------------------------------------------------------------
+PBS: job name is lab4
+PBS: job identifier is 863.iccsl01.iccsl.gonzaga.edu
+PBS: qsub is running on iccsl01.iccsl.gonzaga.edu
+PBS: working directory is /home/Students/dcollins3/cpen435/lab4
+------------------------------------------------------
+Mon Mar 16 13:30:26 PDT 2015
+n: 512 npes: 8 
+n > 16, will not print matrices
+    Time elapsed: 1.540651 sec
+Mon Mar 16 13:30:28 PDT 2015
+-----------------------------------------------------------------
+PBS: job name is lab4
+PBS: job identifier is 864.iccsl01.iccsl.gonzaga.edu
+PBS: qsub is running on iccsl01.iccsl.gonzaga.edu
+PBS: working directory is /home/Students/dcollins3/cpen435/lab4
+------------------------------------------------------
+Mon Mar 16 13:30:26 PDT 2015
+n: 512 npes: 16 
+n > 16, will not print matrices
+    Time elapsed: 0.544109 sec
+Mon Mar 16 13:30:28 PDT 2015
+-----------------------------------------------------------------
+PBS: job name is lab4
+PBS: job identifier is 865.iccsl01.iccsl.gonzaga.edu
+PBS: qsub is running on iccsl01.iccsl.gonzaga.edu
+PBS: working directory is /home/Students/dcollins3/cpen435/lab4
+------------------------------------------------------
+Mon Mar 16 13:30:26 PDT 2015
+n: 1024 npes: 4 
+n > 16, will not print matrices
+    Time elapsed: 6.254086 sec
+Mon Mar 16 13:30:33 PDT 2015
+-----------------------------------------------------------------
+PBS: job name is lab4
+PBS: job identifier is 866.iccsl01.iccsl.gonzaga.edu
+PBS: qsub is running on iccsl01.iccsl.gonzaga.edu
+PBS: working directory is /home/Students/dcollins3/cpen435/lab4
+------------------------------------------------------
+Mon Mar 16 13:30:26 PDT 2015
+n: 1024 npes: 8 
+n > 16, will not print matrices
+    Time elapsed: 4.90581 sec
+Mon Mar 16 13:30:31 PDT 2015
+-----------------------------------------------------------------
+PBS: job name is lab4
+PBS: job identifier is 867.iccsl01.iccsl.gonzaga.edu
+PBS: qsub is running on iccsl01.iccsl.gonzaga.edu
+PBS: working directory is /home/Students/dcollins3/cpen435/lab4
+------------------------------------------------------
+Mon Mar 16 13:30:26 PDT 2015
+n: 1024 npes: 16 
+n > 16, will not print matrices
+    Time elapsed: 3.8338 sec
+Mon Mar 16 13:30:30 PDT 2015

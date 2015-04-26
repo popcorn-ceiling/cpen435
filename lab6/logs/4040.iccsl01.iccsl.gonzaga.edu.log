@@ -1,0 +1,7 @@
+-----------------------------------------------------------------
+PBS: job identifier is lab6 4040.iccsl01.iccsl.gonzaga.edu
+------------------------------------------------------
+Wed Apr  1 20:39:08 PDT 2015
+n: 512 npes: 8 
+    Elapsed time is 0.184010 sec
+    n > 16, will not print matrices

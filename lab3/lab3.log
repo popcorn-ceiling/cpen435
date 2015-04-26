@@ -1,0 +1,21 @@
+-----------------------------------------------------------------
+PBS: qsub is running on iccsl01.iccsl.gonzaga.edu
+PBS: originating queue is batch
+PBS: executing queue is batch
+PBS: working directory is /home/Students/dcollins3/cpen435/lab3
+PBS: execution mode is PBS_BATCH
+PBS: job identifier is 610.iccsl01.iccsl.gonzaga.edu
+PBS: job name is lab3
+PBS: node file is /var/spool/torque/aux//610.iccsl01.iccsl.gonzaga.edu
+PBS: current home directory is /home/Students/dcollins3
+------------------------------------------------------
+Fri Mar  6 13:16:48 PST 2015
+Process 2 - ID: 14552 ; smallest process ID: 14550 from Process 0
+Process 3 - ID: 14553 ; smallest process ID: 14550 from Process 0
+Process 4 - ID: 14555 ; smallest process ID: 14550 from Process 0
+Process 5 - ID: 14556 ; smallest process ID: 14550 from Process 0
+Process 6 - ID: 14557 ; smallest process ID: 14550 from Process 0
+Process 7 - ID: 14559 ; smallest process ID: 14550 from Process 0
+Process 0 - ID: 14550 ; smallest process ID: 14550 from Process 0
+Process 1 - ID: 14551 ; smallest process ID: 14550 from Process 0
+Fri Mar  6 13:16:49 PST 2015
