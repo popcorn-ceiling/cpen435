@@ -19,6 +19,7 @@
 #define SLAVE_END (int)0x5a5a
 #define ROW_DONE 0x1
 
+void compute_row(void *args);
 void master(int n, int np, int rank, int task_size, MPI_Comm comm);
 void slave(int n, int np, int rank, int task_size, MPI_Comm comm);
 void mat_init(int *mat, int size);
@@ -65,7 +66,6 @@ int main(int argc, char *argv[])
 /**************************************************
  * MPI worker functions 
  **************************************************/
-
 /* Multithreaded functioned, used by thread pool */
 void compute_row(void *args)
 {
@@ -88,14 +88,10 @@ void master(int n, int np, int rank, int task_size, MPI_Comm comm)
 
     printf("n: %d npes: %d \n", n, np);
     
-    rbuf = malloc(n * task_size * sizeof *rbuf);
-    mat_a = malloc(n*n * sizeof *mat_a);
-    mat_b = malloc(n*n * sizeof *mat_b);
-    mat_c = calloc(n*n,  sizeof *mat_c);
-    if (mat_a == NULL || mat_b == NULL || mat_c == NULL || rbuf == NULL) {
-        printf("Error allocating matrices or buffer. Exiting\n");
-        exit(-1);
-    }
+    assert((rbuf = malloc(n * task_size * sizeof *rbuf)) != NULL);
+    assert((mat_a = malloc(n*n * sizeof *mat_a)) != NULL);
+    assert((mat_b = malloc(n*n * sizeof *mat_b)) != NULL);
+    assert((mat_c = calloc(n*n,  sizeof *mat_c)) != NULL);
 
     srand(time(NULL));
     mat_init(mat_a, n);
@@ -159,9 +155,9 @@ void slave(int n, int np, int rank, int task_size, MPI_Comm comm)
     MPI_Status stat_a, stat_b;
     MPI_Request req_a, req_b, req_dummy;
 
-    assert((result = malloc(n * task_size * sizeof *result)) != NULL);
     assert((args = malloc(sizeof(struct worker_args))) != NULL);
     assert((args->row_done = malloc(n * task_size * sizeof *args->row_done)) != NULL);
+    assert((result = malloc(n * task_size * sizeof *result)) != NULL);
     assert((mat_b = malloc(n*n * sizeof *mat_b)) != NULL);
     assert((buf_a = malloc(n * sizeof *buf_a)) != NULL);
     assert((buf_b = malloc(n * sizeof *buf_b)) != NULL);
@@ -237,6 +233,8 @@ void slave(int n, int np, int rank, int task_size, MPI_Comm comm)
     }
 
     assert(threadpool_destroy(pool, 0) == 0);
+    free(args->row_done);
+    free(args);
     free(result);
     free(mat_b);
     free(buf_a);
