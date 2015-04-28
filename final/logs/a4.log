@@ -1,0 +1,25 @@
+Matrix dimmension: 512  Number of threads: 1
+    Time elapsed: 2.882623 sec
+    n > 40, matrix will not be printed
+Matrix dimmension: 512  Number of threads: 2
+    Time elapsed: 0.709455 sec
+    n > 40, matrix will not be printed
+Matrix dimmension: 512  Number of threads: 4
+    Time elapsed: 1.882829 sec
+    n > 40, matrix will not be printed
+Matrix dimmension: 512  Number of threads: 8
+    Time elapsed: 0.174847 sec
+    n > 40, matrix will not be printed
+
+Matrix dimmension: 1024  Number of threads: 1
+    Time elapsed: 9.437771 sec
+    n > 40, matrix will not be printed
+Matrix dimmension: 1024  Number of threads: 2
+    Time elapsed: 5.431398 sec
+    n > 40, matrix will not be printed
+Matrix dimmension: 1024  Number of threads: 4
+    Time elapsed: 3.8971 sec
+    n > 40, matrix will not be printed
+Matrix dimmension: 1024  Number of threads: 8
+    Time elapsed: 1.321648 sec
+    n > 40, matrix will not be printed
