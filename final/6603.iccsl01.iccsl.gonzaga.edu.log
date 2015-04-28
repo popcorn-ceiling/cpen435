@@ -1,0 +1,7 @@
+-----------------------------------------------------------------
+PBS: job identifier is final 6603.iccsl01.iccsl.gonzaga.edu
+------------------------------------------------------
+Tue Apr 28 00:22:34 PDT 2015
+n: 1024 npes: 16 task_size: 8
+    Elapsed time is 0.665355 sec
+    n > 16, will not print matrices
