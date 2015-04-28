@@ -71,7 +71,9 @@ void compute_row(void *args)
 {
     struct worker_args *arg = (struct worker_args*) args;
 
+    printf("about to mult row %d!!!\n", arg->row);
     mat_mult(&arg->result[arg->row], &arg->buf[arg->row*arg->n], arg->mat_b, arg->n, 1);
+    printf("about to update row %d!!!\n", arg->row);
     arg->row_done[arg->row] = ROW_DONE;
 }
 
@@ -100,7 +102,7 @@ void master(int n, int np, int rank, int task_size, MPI_Comm comm)
     t1 = MPI_Wtime();
 
     MPI_Bcast(mat_b, n*n, MPI_INT, rank, comm);
-    
+    printf("m1\n");
     /* distribute tasks to worker pool */
     i = 0;
     while (i < n) {
@@ -110,12 +112,14 @@ void master(int n, int np, int rank, int task_size, MPI_Comm comm)
         i++;
     }
 
+    printf("m2\n");
     /* terminate outstanding task requests */
     for (i = 1; i < np; i++) {
         MPI_Recv(&worker, 1, MPI_INT, MPI_ANY_SOURCE, TASK_REQ, comm, &stat);
         MPI_Send(task, 1, MPI_INT, worker, SLAVE_END, comm);
     }
 
+    printf("m3\n");
     /* combine partial results */
     i = 0;
     while (i < n) {
@@ -149,26 +153,28 @@ void master(int n, int np, int rank, int task_size, MPI_Comm comm)
 void slave(int n, int np, int rank, int task_size, MPI_Comm comm)
 {
     int i, j, all_done, cnt;
-    int *mat_b, *buf_a, *buf_b, *result;
-    struct worker_args *args;
+    int *mat_b, *buf_a, *buf_b, *result, *row_done;
+    struct worker_args **args;
     threadpool_t *pool;
     MPI_Status stat_a, stat_b;
     MPI_Request req_a, req_b, req_dummy;
 
-    assert((args = malloc(sizeof(struct worker_args))) != NULL);
-    assert((args->row_done = malloc(n * task_size * sizeof *args->row_done)) != NULL);
     assert((result = malloc(n * task_size * sizeof *result)) != NULL);
     assert((mat_b = malloc(n*n * sizeof *mat_b)) != NULL);
     assert((buf_a = malloc(n * sizeof *buf_a)) != NULL);
     assert((buf_b = malloc(n * sizeof *buf_b)) != NULL);
+    assert((row_done = malloc(n * task_size * sizeof(int))) != NULL);
+    assert((args = malloc(sizeof(struct worker_args*))) != NULL);
+    for (i = 0; i < task_size; i++) {
+        assert((args[i] = malloc(sizeof(struct worker_args))) != NULL);
+        args[i]->n = n;
+        args[i]->row_done = row_done;
+        args[i]->result = result;
+        args[i]->mat_b = mat_b;
+    }
 
     /* initialize thread pool */
     assert((pool = threadpool_create(task_size, task_size, 0)) != NULL);
-
-    /* init worker args */
-    args->n = n;
-    args->result = result;
-    args->mat_b = mat_b;
 
     /* receive mat_b */
     MPI_Bcast(mat_b, n*n, MPI_INT, MPI_MSTR, comm);
@@ -176,64 +182,78 @@ void slave(int n, int np, int rank, int task_size, MPI_Comm comm)
     /* alternate buffers to overlap comm and comp */
     i = 0;
     while (1) {
+        printf("s1 %d\n", rank);
         /* buf_a comm, buf_b comp */
         MPI_Isend(&rank, 1, MPI_INT, MPI_MSTR, TASK_REQ, comm, &req_dummy);
         MPI_Irecv(buf_a, n*task_size, MPI_INT, MPI_MSTR, MPI_ANY_TAG, comm, &req_a);
 
+        printf("s2 %d\n", rank);
         if (i !=0) {
             /* use thread pool, task is computing one row */
-            args->buf = buf_b;
             for (j = 0; j < task_size; j++) {
-                args->row = j;
-                threadpool_add(pool, &compute_row, &args, 0);
+                args[j]->buf = buf_b;
+                args[j]->row = j;
+                threadpool_add(pool, &compute_row, args[j], 0);
             }
+            printf("s3 %d\n", rank);
             /* wait for all rows to finish */
             all_done = 0;
             while (all_done != 1) {
                 all_done = 1; /* initial condition */
                 for (j = 0; j < task_size; j++) {
-                    all_done &= args->row_done[j]; /* will be 0 if any of the result aren't done */
+                    all_done &= args[0]->row_done[j]; /* will be 0 if any of the result aren't done */
                 }
             }
+            printf("s4 %d\n", rank);
             MPI_Isend(result, n*task_size, MPI_INT, MPI_MSTR, stat_b.MPI_TAG, comm, &req_dummy);
         }
 
-        memcpy(args->row_done, 0, n * task_size * sizeof *args->row_done);
+        printf("s5 %d\n", rank);
+        memset(args[0]->row_done, 0, n * task_size * sizeof(int));
         MPI_Wait(&req_a, &stat_a);
         if (stat_a.MPI_TAG == SLAVE_END) {
             break;
         }
 
+        printf("s6 %d\n", rank);
         /* buf_b comm, buf_a comp */
         MPI_Isend(&rank, 1, MPI_INT, MPI_MSTR, TASK_REQ, comm, &req_dummy);
         MPI_Irecv(buf_b, n*task_size, MPI_INT, MPI_MSTR, MPI_ANY_TAG, comm, &req_b);
 
+        printf("s7 %d\n", rank);
         /* use thread pool, task is computing one row */
-        args->buf = buf_a;
         for (j = 0; j < task_size; j++) {
-            args->row = j;
-            threadpool_add(pool, &compute_row, &args, 0);
+            args[j]->buf = buf_a;
+            args[j]->row = j;
+            threadpool_add(pool, &compute_row, args[j], 0);
         }
+        printf("s8 %d\n", rank);
         /* wait for all rows to finish */
         all_done = 0;
         while (all_done != 1) {
             all_done = 1; /* initial condition */
             for (j = 0; j < task_size; j++) {
-                all_done &= args->row_done[j]; /* will be 0 if any of the result aren't done */
+                all_done &= args[0]->row_done[j]; /* will be 0 if any of the result aren't done */
             }
         }
         
+        printf("s9 %d\n", rank);
         MPI_Isend(result, n*task_size, MPI_INT, MPI_MSTR, stat_a.MPI_TAG, comm, &req_dummy);
-        memcpy(args->row_done, 0, n * task_size * sizeof *args->row_done);
+        memset(args[0]->row_done, 0, n * task_size * sizeof(int));
         MPI_Wait(&req_b, &stat_b);
         if (stat_b.MPI_TAG == SLAVE_END) {
             break;
         }
         i++;
+        printf("s10 %d\n", rank);
     }
 
+    printf("slave %d done with loop\n", rank);
     assert(threadpool_destroy(pool, 0) == 0);
-    free(args->row_done);
+    free(row_done);
+    for (i = 0; i < task_size; i++) {
+        args[i]->row_done = NULL;
+    }
     free(args);
     free(result);
     free(mat_b);
