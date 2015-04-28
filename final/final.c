@@ -209,6 +209,7 @@ void slave(int n, int np, int rank, int task_size, MPI_Comm comm)
         }
 
         printf("s5 %d\n", rank);
+        memset(result, 0, n * task_size * sizeof *result);
         memset(args[0]->row_done, 0, n * task_size * sizeof(int));
         MPI_Wait(&req_a, &stat_a);
         if (stat_a.MPI_TAG == SLAVE_END) {
@@ -236,9 +237,11 @@ void slave(int n, int np, int rank, int task_size, MPI_Comm comm)
                 all_done &= args[0]->row_done[j]; /* will be 0 if any of the result aren't done */
             }
         }
+        mat_print(result, task_size);
         
         printf("s9 %d\n", rank);
         MPI_Isend(result, n*task_size, MPI_INT, MPI_MSTR, stat_a.MPI_TAG, comm, &req_dummy);
+        memset(result, 0, n * task_size * sizeof *result);
         memset(args[0]->row_done, 0, n * task_size * sizeof(int));
         MPI_Wait(&req_b, &stat_b);
         if (stat_b.MPI_TAG == SLAVE_END) {
@@ -250,12 +253,12 @@ void slave(int n, int np, int rank, int task_size, MPI_Comm comm)
 
     printf("slave %d done with loop\n", rank);
     assert(threadpool_destroy(pool, 0) == 0);
-    free(row_done);
     for (i = 0; i < task_size; i++) {
-        args[i]->row_done = NULL;
+        free(args[i]);
     }
     free(args);
     free(result);
+    free(row_done);
     free(mat_b);
     free(buf_a);
     free(buf_b);

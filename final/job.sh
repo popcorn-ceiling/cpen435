@@ -16,6 +16,6 @@ echo ------------------------------------------------------
 
 date
 export PROGRAM="/home/Students/dcollins3/cpen435/final/final"
-mpirun -np $NP $PROGRAM $NM
+mpirun -np $NP valgrind $PROGRAM $NM
 
 exit 0 
