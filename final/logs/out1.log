@@ -1,0 +1,42 @@
+-----------------------------------------------------------------
+PBS: job identifier is final 6616.iccsl01.iccsl.gonzaga.edu
+------------------------------------------------------
+Tue Apr 28 08:20:41 PDT 2015
+n: 512 npes: 4 task_size: 1
+    Elapsed time is 0.434229 sec
+    n > 16, will not print matrices
+-----------------------------------------------------------------
+PBS: job identifier is final 6617.iccsl01.iccsl.gonzaga.edu
+------------------------------------------------------
+Tue Apr 28 08:20:42 PDT 2015
+n: 512 npes: 8 task_size: 1
+    Elapsed time is 0.187302 sec
+    n > 16, will not print matrices
+-----------------------------------------------------------------
+PBS: job identifier is final 6618.iccsl01.iccsl.gonzaga.edu
+------------------------------------------------------
+Tue Apr 28 08:20:44 PDT 2015
+n: 512 npes: 16 task_size: 1
+    Elapsed time is 0.090100 sec
+    n > 16, will not print matrices
+-----------------------------------------------------------------
+PBS: job identifier is final 6619.iccsl01.iccsl.gonzaga.edu
+------------------------------------------------------
+Tue Apr 28 08:20:45 PDT 2015
+n: 1024 npes: 4 task_size: 1
+    Elapsed time is 2.921174 sec
+    n > 16, will not print matrices
+-----------------------------------------------------------------
+PBS: job identifier is final 6620.iccsl01.iccsl.gonzaga.edu
+------------------------------------------------------
+Tue Apr 28 08:20:50 PDT 2015
+n: 1024 npes: 8 task_size: 1
+    Elapsed time is 1.321996 sec
+    n > 16, will not print matrices
+-----------------------------------------------------------------
+PBS: job identifier is final 6621.iccsl01.iccsl.gonzaga.edu
+------------------------------------------------------
+Tue Apr 28 08:20:52 PDT 2015
+n: 1024 npes: 16 task_size: 1
+    Elapsed time is 0.871061 sec
+    n > 16, will not print matrices
